@@ -208,13 +208,16 @@
       }
 
       const formData = {
-        specialty: i5,
-        doctor: h5,
-        rating: g5,
-        support: f5.value,
-        listening: e5.value,
-        improvement: d5.value,
-        continue: c5.value
+    const formData = {
+  specialty: selectedSpecialty,
+  doctor: selectedDoctor,
+  rating: selectedStars,
+  support: q1.value,
+  listening: q2.value,
+  improvement: q3.value,
+  continue: q4.value
+};
+
       };
 
       fetch('https://script.google.com/macros/s/AKfycbxOxnh24T7QgiMOaS4_zw8QolLyL7Z1goT5mY2UKr8lC1Uv50bxmWqu37o9pE6TMOj6fQ/exec', {
