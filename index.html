@@ -193,29 +193,24 @@
         star.style.transform = 'scale(1)';
       });
     }
-
-    function submitRating() {
-  const specialty = document.getElementById('specialty-select').value;
+  function submitRating() {
+      const specialty = document.getElementById('specialty-select').value;
       const doctor = document.getElementById('doctor-select').value;
       const support = document.querySelector('input[name="q1"]:checked');
       const listening = document.querySelector('input[name="q2"]:checked');
       const improvement = document.querySelector('input[name="q3"]:checked');
       const continuation = document.querySelector('input[name="q4"]:checked');
 
-      if (!selectedDoctor || !selectedSpecialty || !q1 || !q2 || !q3 || !q4 || selectedStars == 0) {
-        alert('يرجى اختيار الطبيب، التخصص، تقييم النجوم، والإجابة على جميع الأسئلة.');
-        return;
       }
 
-      const formData = {
-    const formData = {
-  specialty: selectedSpecialty,
-  doctor: selectedDoctor,
+   const formData = {
+  specialty: specialty,
+  doctor: doctor,
   rating: selectedStars,
-  support: q1.value,
-  listening: q2.value,
-  improvement: q3.value,
-  continue: q4.value
+  support: support.value,
+  listening: listening.value,
+  improvement: improvement.value,
+  continue: continuation.value
 };
 
       };
