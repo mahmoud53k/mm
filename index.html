@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقييم الطبيب</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('https://i.ibb.co/0RPMQYLB/Lavison-Gradient-Bckgrnd.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 20px;
+      text-align: center;
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 500px;
+      margin: 30px auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card img {
+      width: 200px;
+      height: auto;
+      object-fit: contain;
+      margin-bottom: 15px;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    .stars {
+      font-size: 40px;
+      color: #ccc;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .stars:hover,
+    .stars:hover ~ .stars,
+    .stars.active {
+      color: gold;
+      transform: scale(1.2);
+    }
+    .question-label {
+      text-align: right;
+      margin-top: 10px;
+      display: block;
+      font-weight: bold;
+    }
+    .radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: normal;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      padding: 5px 10px;
+      border-radius: 20px;
+    }
+    .radio-group input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #007bff;
+      cursor: pointer;
+    }
+    .radio-group label:hover {
+      background-color: #eee;
+      transform: scale(1.05);
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 20px 40px;
+      font-size: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .confirmation {
+      color: green;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="https://i.ibb.co/rKV3j3C9/Lavison-Clinics-Horizontal-Full-Color.png" alt="Lavison Clinics Logo" />
+
+    <select id="specialty-select" onchange="filterDoctors()">
+      <option value="">اختر التخصص</option>
+      <option value="الصحة النفسية">الصحة النفسية</option>
+      <option value="التغذية">التغذية</option>
+      <option value="الجراحة">الجراحة</option>
+    </select>
+
+    <select id="doctor-select">
+      <option value="">اختر الطبيب</option>
+      <option value="د. سارة حسن" data-specialty="الصحة النفسية">د. سارة حسن</option>
+      <option value="د. علي فؤاد" data-specialty="التغذية">د. علي فؤاد</option>
+      <option value="د. هالة كمال" data-specialty="الجراحة">د. هالة كمال</option>
+      <option value="د. محمد عبد الله" data-specialty="الصحة النفسية">د. محمد عبد الله</option>
+      <option value="د. ريم خالد" data-specialty="التغذية">د. ريم خالد</option>
+    </select>
+
+    <!-- Star Rating -->
+    <div id="star-rating" style="margin: 20px 0;">
+      <span class="stars" data-value="5">&#9733;</span>
+      <span class="stars" data-value="4">&#9733;</span>
+      <span class="stars" data-value="3">&#9733;</span>
+      <span class="stars" data-value="2">&#9733;</span>
+      <span class="stars" data-value="1">&#9733;</span>
+    </div>
+
+    <label class="question-label">هل شعرت بأنك حصلت على الدعم الكافي خلال الجلسة؟</label>
+    <div class="radio-group">
+      <label><input type="radio" name="q1" value="نعم"> نعم</label>
+      <label><input type="radio" name="q1" value="لا"> لا</label>
+    </div>
+
+    <label class="question-label">هل تم الاستماع لك بعناية؟</label>
+    <div class="radio-group">
+      <label><input type="radio" name="q2" value="نعم"> نعم</label>
+      <label><input type="radio" name="q2" value="لا"> لا</label>
+    </div>
+
+    <label class="question-label">هل تشعر بتحسن بعد الجلسة؟</label>
+    <div class="radio-group">
+      <label><input type="radio" name="q3" value="نعم"> نعم</label>
+      <label><input type="radio" name="q3" value="لا"> لا</label>
+    </div>
+
+    <label class="question-label">هل ترغب في استكمال الجلسات مع نفس الطبيب؟</label>
+    <div class="radio-group">
+      <label><input type="radio" name="q4" value="نعم"> نعم</label>
+      <label><input type="radio" name="q4" value="لا"> لا</label>
+    </div>
+
+    <button onclick="submitRating()">إرسال التقييم</button>
+    <div class="confirmation" id="confirmation"></div>
+  </div>
+
+  <script>
+    let selectedStars = 0;
+    const stars = document.querySelectorAll('.stars');
+
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => {
+        resetStars();
+        highlightStars(star.dataset.value);
+      });
+      star.addEventListener('click', () => {
+        selectedStars = star.dataset.value;
+        stars.forEach(s => s.classList.remove('active'));
+        highlightStars(selectedStars);
+        stars.forEach(s => {
+          if (s.dataset.value <= selectedStars) s.classList.add('active');
+        });
+      });
+      star.addEventListener('mouseout', () => {
+        resetStars();
+        if (selectedStars) highlightStars(selectedStars);
+      });
+    });
+
+    function highlightStars(value) {
+      stars.forEach(star => {
+        if (star.dataset.value <= value) {
+          star.style.color = 'gold';
+          star.style.transform = 'scale(1.2)';
+        }
+      });
+    }
+
+    function resetStars() {
+      stars.forEach(star => {
+        star.style.color = '#ccc';
+        star.style.transform = 'scale(1)';
+      });
+    }
+
+    function submitRating() {
+      const specialtySelect = document.getElementById('specialty-select');
+      const doctorSelect = document.getElementById('doctor-select');
+      const selectedSpecialty = specialtySelect.value;
+      const selectedDoctor = doctorSelect.value;
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      const q3 = document.querySelector('input[name="q3"]:checked');
+      const q4 = document.querySelector('input[name="q4"]:checked');
+
+      if (!selectedDoctor || !selectedSpecialty || !q1 || !q2 || !q3 || !q4 || selectedStars == 0) {
+        alert('يرجى اختيار الطبيب، التخصص، تقييم النجوم، والإجابة على جميع الأسئلة.');
+        return;
+      }
+
+      const formData = {
+        specialty: selectedSpecialty,
+        doctor: selectedDoctor,
+        rating: selectedStars,
+        support: q1.value,
+        listening: q2.value,
+        improvement: q3.value,
+        continue: q4.value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbxOxnh24T7QgiMOaS4_zw8QolLyL7Z1goT5mY2UKr8lC1Uv50bxmWqu37o9pE6TMOj6fQ/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(() => {
+        document.getElementById('confirmation').innerText = 'تم إرسال التقييم. شكرًا لملاحظاتك!';
+        document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+        specialtySelect.value = '';
+        doctorSelect.value = '';
+        selectedStars = 0;
+        resetStars();
+      })
+      .catch(error => {
+        alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
+        console.error(error);
+      });
+    }
+
+    function filterDoctors() {
+      const specialty = document.getElementById('specialty-select').value;
+      const doctorSelect = document.getElementById('doctor-select');
+      const options = doctorSelect.querySelectorAll('option');
+
+      options.forEach(option => {
+        if (!option.dataset.specialty) {
+          option.style.display = '';
+        } else {
+          option.style.display = option.dataset.specialty === specialty ? '' : 'none';
+        }
+      });
+
+      doctorSelect.value = '';
+    }
+  </script>
+</body>
+</html>
