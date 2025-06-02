@@ -195,14 +195,12 @@
     }
 
     function submitRating() {
-      const specialtySelect = document.getElementById('specialty-select');
-      const doctorSelect = document.getElementById('doctor-select');
-      const selectedSpecialty = specialtySelect.value;
-      const selectedDoctor = doctorSelect.value;
-      const q1 = document.querySelector('input[name="q1"]:checked');
-      const q2 = document.querySelector('input[name="q2"]:checked');
-      const q3 = document.querySelector('input[name="q3"]:checked');
-      const q4 = document.querySelector('input[name="q4"]:checked');
+  const specialty = document.getElementById('specialty-select').value;
+      const doctor = document.getElementById('doctor-select').value;
+      const support = document.querySelector('input[name="q1"]:checked');
+      const listening = document.querySelector('input[name="q2"]:checked');
+      const improvement = document.querySelector('input[name="q3"]:checked');
+      const continuation = document.querySelector('input[name="q4"]:checked');
 
       if (!selectedDoctor || !selectedSpecialty || !q1 || !q2 || !q3 || !q4 || selectedStars == 0) {
         alert('يرجى اختيار الطبيب، التخصص، تقييم النجوم، والإجابة على جميع الأسئلة.');
