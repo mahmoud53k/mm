@@ -58,7 +58,7 @@
       }
     }
     .container {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.12);
       padding: 35px 25px;
       border-radius: 25px;
       width: 90%;
@@ -69,7 +69,7 @@
       box-shadow: 0 0 20px rgba(255,255,255,0.2);
       animation: fadeIn 1s;
       z-index: 1;
-      backdrop-filter: blur(1px);
+      backdrop-filter: blur(0.5px);
     }
     @keyframes fadeIn {
       from {
@@ -107,7 +107,7 @@
       padding: 0.8rem;
       font-size: 1rem;
       font-weight: bold;
-      background:  url('https://i.ibb.co/fzffWJvk/Picture1.png');
+      background: url('https://i.ibb.co/fzffWJvk/Picture1.png');
       color: white;
       border: none;
       border-radius: 12px;
@@ -152,13 +152,6 @@
         width: 160px;
       }
     }
-    .loading {
-      animation: loading 1s infinite linear;
-    }
-    @keyframes loading {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
@@ -179,26 +172,34 @@
     function encodeBase64(str) {
       return btoa(unescape(encodeURIComponent(str)));
     }
+
     async function searchPatient() {
       const codeInput = document.getElementById('code').value.trim();
       const resultDiv = document.getElementById('result');
+
       if (!codeInput) {
         resultDiv.innerHTML = "<p style='color:orange; font-weight:bold;'>يرجى إدخال كود المريض.</p>";
         return;
       }
-      resultDiv.innerHTML = "<div class='loading'><strong>جاري التحميل...</strong></div>";
+
+      resultDiv.innerHTML = "<div><strong>جاري التحميل...</strong></div>";
+
       try {
         const encodedCode = encodeBase64(codeInput);
+
         const [nameResponse, reportResponse] = await Promise.all([
           fetch(`https://script.google.com/macros/s/AKfycbzjNPODeKbb-6sqdpmoUVANUJpx-oINQh2-jDuLWriScfJTyi6kXCdVki1D-hVKWXTcyw/exec?code=${encodedCode}`),
-          fetch(`https://script.google.com/macros/s/AKfycbzONscoKjAbJssyBOtbBbQMnP7YOzPnbrx7DtTtDTktzrMKzoWkud7Awty3h6qKQ6nv/exec?code=${encodedCode}`)
+          fetch(`https://script.google.com/macros/s/AKfycbyJu-SM5WoI5akNGE8bUe7uzBrdVILnyZdQo-CwviHXzGTZo7_zP7z_BTROZBrcTB91/exec?code=${encodedCode}`)
         ]);
+
         if (!nameResponse.ok || !reportResponse.ok) {
           throw new Error("حدث خطأ في الاتصال بالخادم.");
         }
+
         const nameData = await nameResponse.json();
         const reportData = await reportResponse.json();
-        if (nameData.success && reportData.success) {
+
+        if (nameData.success && nameData.name && reportData.success && reportData.report) {
           resultDiv.innerHTML = `
             <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; border: 1px solid #ccc;">
               <p><strong>الاسم:</strong> ${nameData.name}</p>
@@ -206,7 +207,9 @@
             </div>
           `;
         } else {
-          resultDiv.innerHTML = "<p style='color:red; font-weight:bold;'>لم يتم العثور على البيانات.</p>";
+          resultDiv.innerHTML = `
+            <p style='color:red; font-weight:bold;'>لم يتم العثور على البيانات.</p>
+          `;
         }
       } catch (error) {
         console.error(error);
