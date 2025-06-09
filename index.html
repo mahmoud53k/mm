@@ -66,10 +66,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      box-shadow: 0 0 25px rgba(255,255,255,0.25);
       animation: fadeIn 1s;
       z-index: 1;
-      backdrop-filter: blur(0.5px);
+      backdrop-filter: blur(0.1px);
     }
     @keyframes fadeIn {
       from {
@@ -187,13 +187,16 @@
       try {
         const encodedCode = encodeBase64(codeInput);
 
+        const nameUrl = `https://script.google.com/macros/s/AKfycbxVeIEvmO0m3lV2QHnkBOpADYgVdH6i5MOgHi--l5Ir5Bz2eBLB7bbucKsp6vsZgK4iQQ/exec?code=${encodedCode}`;
+        const reportUrl = `https://script.google.com/macros/s/AKfycbyJu-SM5WoI5akNGE8bUe7uzBrdVILnyZdQo-CwviHXzGTZo7_zP7z_BTROZBrcTB91/exec?code=${encodedCode}`;
+
         const [nameResponse, reportResponse] = await Promise.all([
-          fetch(`https://script.google.com/macros/s/AKfycbzjNPODeKbb-6sqdpmoUVANUJpx-oINQh2-jDuLWriScfJTyi6kXCdVki1D-hVKWXTcyw/exec?code=${encodedCode}`),
-          fetch(`https://script.google.com/macros/s/AKfycbyJu-SM5WoI5akNGE8bUe7uzBrdVILnyZdQo-CwviHXzGTZo7_zP7z_BTROZBrcTB91/exec?code=${encodedCode}`)
+          fetch(nameUrl),
+          fetch(reportUrl)
         ]);
 
         if (!nameResponse.ok || !reportResponse.ok) {
-          throw new Error("حدث خطأ في الاتصال بالخادم.");
+          throw new Error("فشل في الوصول إلى الخادم.");
         }
 
         const nameData = await nameResponse.json();
@@ -207,13 +210,11 @@
             </div>
           `;
         } else {
-          resultDiv.innerHTML = `
-            <p style='color:red; font-weight:bold;'>لم يتم العثور على البيانات.</p>
-          `;
+          resultDiv.innerHTML = "<p style='color:red; font-weight:bold;'>لم يتم العثور على بيانات المريض.</p>";
         }
       } catch (error) {
-        console.error(error);
-        resultDiv.innerHTML = "<p style='color:red; font-weight:bold;'>حدث خطأ أثناء الاتصال بالخادم.</p>";
+        console.error('خطأ أثناء جلب البيانات:', error);
+        resultDiv.innerHTML = "<p style='color:red; font-weight:bold;'>حدث خطأ أثناء الاتصال بالخادم أو معالجة البيانات.</p>";
       }
     }
   </script>
