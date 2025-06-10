@@ -12,211 +12,149 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
-      text-align: center;
-      background: linear-gradient(to bottom right, #1e3c72, #2a5298);
     }
     body {
+      font-family: Arial, sans-serif;
       background-image: url('https://i.ibb.co/fzffWJvk/Picture1.png');
       background-size: cover;
       background-position: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-    }
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
-      z-index: 0;
     }
     .logo-top {
-      margin: 40px auto 0;
-      z-index: 1;
+      margin: 20px auto 0;
+      text-align: center;
     }
     .logo-top img {
-      width: 260px;
-      max-width: 100%;
-      pointer-events: none;
-      user-select: none;
-      filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.03);
-      }
+      width: 200px;
+      max-width: 80%;
     }
     .container {
-      background: rgba(255, 255, 255, 0.12);
-      padding: 35px 25px;
-      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 30px 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
       width: 90%;
       max-width: 500px;
+      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 0 25px rgba(255,255,255,0.25);
-      animation: fadeIn 1s;
-      z-index: 1;
-      backdrop-filter: blur(0.1px);
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    h2 {
-      font-weight: bold;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      text-shadow: 0 0 5px rgba(255,255,255,0.3);
+      margin: 20px auto 10px auto; /* ↓↓ تقليل المسافة السفلية ↓↓ */
+      flex: none; /* منع التمدد المفرط للصندوق */
     }
     input {
-      padding: 14px;
+      padding: 10px;
       margin: 10px 0;
       width: 100%;
       max-width: 400px;
-      border-radius: 10px;
-      border: none;
+      border-radius: 6px;
+      border: 1px solid #ccc;
       font-size: 1rem;
-      font-weight: bold;
-      background-color: #f9f9f9;
-      color: #333;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    input::placeholder {
-      color: #888;
     }
     button {
-      padding: 0.8rem;
+      padding: 0.75rem;
       font-size: 1rem;
-      font-weight: bold;
-      background: url('https://i.ibb.co/fzffWJvk/Picture1.png');
+      background: url('https://i.ibb.co/RT8w1dLR/Lavison-Gradient-Bckgrnd.jpg');
+      background-size: cover;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
       width: 100%;
       max-width: 300px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      margin-top: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+      margin-top: 10px;
     }
     button:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    button:active {
+      transform: scale(0.95);
+    }
+    button:active::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      width: 200%;
+      height: 200%;
+      transform: translate(-50%, -50%) scale(1);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
     }
     #result {
       margin-top: 20px;
+      text-align: center;
       font-size: 1rem;
       line-height: 1.6;
-      font-weight: bold;
-    }
-    footer {
-      margin-top: 40px;
-      padding: 10px;
-      font-size: 0.85rem;
-      color: #ddd;
-      font-weight: bold;
-      text-shadow: 0 0 3px rgba(0,0,0,0.3);
-      z-index: 1;
-      cursor: pointer;
-    }
-    footer:hover {
-      text-decoration: underline;
     }
     @media (max-width: 600px) {
       body {
         padding: 10px;
       }
       .container {
-        padding: 25px 15px;
+        padding: 20px 15px;
+        margin-bottom: 10px;
       }
       .logo-top img {
         width: 160px;
+      }
+      button {
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
+
   <div class="logo-top">
-    <img src="https://i.ibb.co/mkcbtjN/clinics-logo.png" alt="شعار العيادة">
+    <img src="https://i.ibb.co/mkcbtjN/clinics-logo.png" alt="clinics-logo">
   </div>
+
   <div class="container">
     <h2>استعلام عن حالة المريض</h2>
     <input type="text" id="code" placeholder="كود المريض">
     <button onclick="searchPatient()">عرض الحالة</button>
+
     <div id="result"></div>
   </div>
-  <footer onclick="window.open('https://bedayaccpa.com/', '_blank')">
-    &copy; 2025 Lavison Medical Center
-  </footer>
-  <script>
-    function encodeBase64(str) {
-      return btoa(unescape(encodeURIComponent(str)));
-    }
 
+  <script>
     async function searchPatient() {
       const codeInput = document.getElementById('code').value.trim();
       const resultDiv = document.getElementById('result');
-
-      if (!codeInput) {
-        resultDiv.innerHTML = "<p style='color:orange; font-weight:bold;'>يرجى إدخال كود المريض.</p>";
-        return;
-      }
-
-      resultDiv.innerHTML = "<div><strong>جاري التحميل...</strong></div>";
+      resultDiv.innerHTML = "جاري التحميل...";
 
       try {
-        const encodedCode = encodeBase64(codeInput);
-
-        const nameUrl = `https://script.google.com/macros/s/AKfycbxVeIEvmO0m3lV2QHnkBOpADYgVdH6i5MOgHi--l5Ir5Bz2eBLB7bbucKsp6vsZgK4iQQ/exec?code=${encodedCode}`;
-        const reportUrl = `https://script.google.com/macros/s/AKfycbyJu-SM5WoI5akNGE8bUe7uzBrdVILnyZdQo-CwviHXzGTZo7_zP7z_BTROZBrcTB91/exec?code=${encodedCode}`;
-
         const [nameResponse, reportResponse] = await Promise.all([
-          fetch(nameUrl),
-          fetch(reportUrl)
+          fetch(`https://script.google.com/macros/s/AKfycbzjNPODeKbb-6sqdpmoUVANUJpx-oINQh2-jDuLWriScfJTyi6kXCdVki1D-hVKWXTcyw/exec?code=${codeInput}`),
+          fetch(`https://script.google.com/macros/s/AKfycbzONscoKjAbJssyBOtbBbQMnP7YOzPnbrx7DtTtDTktzrMKzoWkud7Awty3h6qKQ6nv/exec?code=${codeInput}`)
         ]);
-
-        if (!nameResponse.ok || !reportResponse.ok) {
-          throw new Error("فشل في الوصول إلى الخادم.");
-        }
 
         const nameData = await nameResponse.json();
         const reportData = await reportResponse.json();
 
-        if (nameData.success && nameData.name && reportData.success && reportData.report) {
+        if (nameData.success && reportData.success) {
           resultDiv.innerHTML = `
-            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; border: 1px solid #ccc;">
-              <p><strong>الاسم:</strong> ${nameData.name}</p>
-              <p><strong>تقرير الحالة:</strong> ${reportData.report}</p>
-            </div>
+            <p><strong>الاسم:</strong> ${nameData.name}</p>
+            <p><strong>تقرير الحالة:</strong> ${reportData.report}</p>
           `;
         } else {
-          resultDiv.innerHTML = "<p style='color:red; font-weight:bold;'>لم يتم العثور على بيانات المريض.</p>";
+          resultDiv.innerHTML = `<p style="color:red;">لم يتم العثور على البيانات.</p>`;
         }
       } catch (error) {
-        console.error('خطأ أثناء جلب البيانات:', error);
-        resultDiv.innerHTML = "<p style='color:red; font-weight:bold;'>حدث خطأ أثناء الاتصال بالخادم أو معالجة البيانات.</p>";
+        console.error(error);
+        resultDiv.innerHTML = `<p style="color:red;">حدث خطأ أثناء الاتصال بالخادم.</p>`;
       }
     }
   </script>
+
 </body>
 </html>
